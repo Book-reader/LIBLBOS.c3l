@@ -31,9 +31,6 @@ struct Environment
 	String current_directory_path;
 }
 
-const INPUT_BUF_LEN = 32;
-const KEY_BACKSPACE = 0x7f;
-
 macro void write_terminal(String str) => syscall(WRITE_TERMINAL, (usz)str.ptr, str.len);
 macro MemoryBlock alloc_blocks(usz num_blocks) => (MemoryBlock)syscall(ALLOC_BLOCKS, num_blocks);
 macro void free_blocks(MemoryBlock block, usz num_blocks) => syscall(FREE_BLOCKS, (usz)block, num_blocks);

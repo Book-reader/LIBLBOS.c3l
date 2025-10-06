@@ -1,6 +1,9 @@
 module lbos::io;
 import lbos::syscall;
 
+const INPUT_BUF_LEN = 32;
+const KEY_BACKSPACE = 0x7f;
+
 macro void print(String str)
 {
 	syscall::write_terminal(str);
