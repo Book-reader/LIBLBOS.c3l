@@ -1,6 +1,7 @@
 module lbos::ktask;
 import lbos::fs;
 import lbos::syscall;
+import lbos::panic;
 
 faultdef FS_OPEN_FAILED, FILE_OPEN_FAILED, FILE_READ_FAILED,
 			DIR_NOT_FOUND, INVALID_RECORD, USER_ERROR,
@@ -88,9 +89,9 @@ struct KTaskLoadDDIFile
 *>
 fn void query(KTaskRequest* req)
 {
-	lbos::send_notification(0, (MemoryBlock)req);
-	lbos::wait_for_notif_ack(0);
-	MemoryBlock ret = lbos::wait_for_notification();
+	syscall::send_notification(0, (MemoryBlock)req);
+	syscall::wait_for_notif_ack(0);
+	MemoryBlock ret = syscall::wait_for_notification();
 	if ((uptr)ret != (uptr)req)
 	{
 		lbos::print("ktask err!"/*"ktask failed to respond properly!\n"*/);
@@ -103,9 +104,9 @@ fn void query(KTaskRequest* req)
 *>
 fn void? fs_open(FileSystem* fs)
 {
-	TaskID t = lbos::get_current_task();
-	KTaskFSOpenRequest* req = (KTaskFSOpenRequest*)lbos::alloc_blocks(1);
-	defer lbos::free_blocks((MemoryBlock)req, 1);
+	TaskID t = syscall::get_current_task();
+	KTaskFSOpenRequest* req = (KTaskFSOpenRequest*)syscall::alloc_blocks(1);
+	defer syscall::free_blocks((MemoryBlock)req, 1);
 	req.type = FS_OPEN;
 	req.reply_to = t;
 	req.fs = fs;
@@ -120,9 +121,9 @@ fn void? fs_open(FileSystem* fs)
 *>
 fn void? fs_open_dir(FileSystem* fs, DirectoryReader* dir, String path)
 {
-	TaskID t = lbos::get_current_task();
-	KTaskFSOpenDirRequest* req = (KTaskFSOpenDirRequest*)lbos::alloc_blocks(1);
-	defer lbos::free_blocks((MemoryBlock)req, 1);
+	TaskID t = syscall::get_current_task();
+	KTaskFSOpenDirRequest* req = (KTaskFSOpenDirRequest*)syscall::alloc_blocks(1);
+	defer syscall::free_blocks((MemoryBlock)req, 1);
 	req.type = FS_OPEN_DIR;
 	req.reply_to = t;
 	req.fs = fs;
@@ -147,9 +148,9 @@ fn void? fs_open_dir(FileSystem* fs, DirectoryReader* dir, String path)
 *>
 fn void? fs_read_dir(FileSystem* fs, DirectoryReader* dir, Record* record)
 {
-	TaskID t = lbos::get_current_task();
-	KTaskFSReadDirRequest* req = (KTaskFSReadDirRequest*)lbos::alloc_blocks(1);
-	defer lbos::free_blocks((MemoryBlock)req, 1);
+	TaskID t = syscall::get_current_task();
+	KTaskFSReadDirRequest* req = (KTaskFSReadDirRequest*)syscall::alloc_blocks(1);
+	defer syscall::free_blocks((MemoryBlock)req, 1);
 	req.type = FS_READ_DIR;
 	req.reply_to = t;
 	req.fs = fs;
@@ -194,7 +195,7 @@ fn void? fs_open_file(FileSystem* fs, Record* record, FileReader* reader)
 *>
 fn void? fs_read_file(FileSystem* fs, FileReader* reader, char[] buf)
 {
-	TaskID t = lbos::get_current_task();
+	TaskID t = syscall::get_current_task();
 	KTaskFSReadFileRequest* req = (KTaskFSReadFileRequest*)syscall::alloc_blocks(1);
 	defer syscall::free_blocks((MemoryBlock)req, 1);
 	req.type = FS_READ_FILE;
