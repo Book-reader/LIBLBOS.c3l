@@ -1,0 +1,7 @@
+{
+  "provides" : "liblbos",
+  "sources" : [ "src/**" ],
+  "targets" : {
+	  "elf-riscv32": {},
+  }
+}
