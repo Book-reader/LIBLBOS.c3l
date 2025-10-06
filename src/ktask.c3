@@ -1,5 +1,6 @@
 module lbos::ktask;
 import lbos::fs;
+import lbos::syscall;
 
 faultdef FS_OPEN_FAILED, FILE_OPEN_FAILED, FILE_READ_FAILED,
 			DIR_NOT_FOUND, INVALID_RECORD, USER_ERROR,

@@ -1,4 +1,6 @@
 module lbos::syscall;
+import lbos::fb;
+import lbos::keys;
 
 typedef TaskID = char;
 typedef MemoryBlock = void*;
