@@ -1,5 +1,6 @@
 module lbos::fs;
 import lbos::ktask;
+import lbos::panic;
 
 const MAX_FILENAME = 12;
 
@@ -60,7 +61,7 @@ macro File? open_file(String name)
 {
 	if (name[0] == '/')
 	{
-		lbos::abort("TODO");
+		panic::abort("TODO");
 	}
 
 	DirectoryReader dir;
