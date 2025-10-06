@@ -3,6 +3,7 @@ import lbos::fs;
 import lbos::syscall;
 import lbos::panic;
 import lbos::mem;
+import lbos::io;
 
 faultdef FS_OPEN_FAILED, FILE_OPEN_FAILED, FILE_READ_FAILED,
 			DIR_NOT_FOUND, INVALID_RECORD, USER_ERROR,
@@ -95,7 +96,7 @@ fn void query(KTaskRequest* req)
 	MemoryBlock ret = syscall::wait_for_notification();
 	if ((uptr)ret != (uptr)req)
 	{
-		lbos::print("ktask err!"/*"ktask failed to respond properly!\n"*/);
+		io::print("ktask err!"/*"ktask failed to respond properly!\n"*/);
 	}
 }
 

@@ -17,7 +17,7 @@ macro abort(String message) @builtin @noreturn
 
 macro unreachable(String message) @builtin @noreturn
 {
-	$if env::SAFETY:
+	$if env::COMPILER_SAFE_MODE:
 		panic(message, "", "", 0);
 	$endif
 	$$trap();
